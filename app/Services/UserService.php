@@ -17,12 +17,16 @@ class UserService extends ApiService
 
     public function post($path, $data)
     {
-        return Http::post($this->endpoint . "/" . $path, $data)->body();
+        return Http::post($this->endpoint . "/" . $path, $data)->json();
     }
 
-    public function get($path, $data)
+    public function get($path, $data = [])
     {
-        return Http::get($this->endpoint . "/" . $path, $data)->json();
+        return Http::acceptJson()->withHeaders(
+            [
+                "Authorization" => request()->header('Authorization')
+            ]
+        )->get($this->endpoint . "/" . $path, $data)->json();
     }
 
     public function put($path, $data)
@@ -39,5 +43,10 @@ class UserService extends ApiService
     public function login(array $data)
     {
         return $this->post("users/login", $data);
+    }
+
+    public function list()
+    {
+        return $this->get("users");
     }
 }

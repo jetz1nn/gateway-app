@@ -28,5 +28,7 @@ class UserServiceController extends Controller
         return $this->userService->login($request->all());
     }
 
-
+    public function index() {
+        return $this->userService->list();
+    }
 }
